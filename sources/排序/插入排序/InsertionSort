@@ -1,0 +1,21 @@
+public class InsertionSort{
+//原地排序(空间复杂度O(1)),稳定(排序前后相同的值顺序不变) 最好时间复杂度O(n),最坏(n^2),平均(O(n^2))
+	public void sort(int[] a, int n){
+		if(n <= 1) return;
+
+		for(int i = 1; j < n; i++){
+			int value = a[i];
+			int j = i -1 ;
+			for(; j > 0; j--){
+				if(a[j] > value){
+					a[j+1] = a[j]
+				}else{
+				  break;
+				}
+			}
+			a[j+1] = value;
+		}
+
+	}
+
+}
