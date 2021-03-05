@@ -1,0 +1,49 @@
+节点的高度=节点到叶子节点的最长路径（边数）。
+节点的深度=根节点到这个节点所经历的边的个数。
+节点的层数=节点的深度+1.
+树的高度=跟节点的告诉。
+
+二叉树遍历：前、中、后指的是节点本身的位置。
+前序遍历：
+对于树中的任意节点来说，先打印这个节点，然后再打印它的左子树，最后打印它的右子树。
+中序遍历：
+对于树中的任意节点来说，先打印它的左子树，然后打印它本身，最后打印它的右子树。
+后续便利：
+对于树中的任意节点来说，先打印它的左子树，然后打印它的右子树，最后打印节点本身。
+
+实际上二叉树的前、中、后序遍历就是一个递归的过程。比如，前序遍历，其实就是先打印根节点，然后再递归打印左子树，最后递归打印右子树。
+前序遍历的递推公式：
+preOrder(r) = print r -> preOrder(r->left) -> preOrder(r->right);
+中序遍历的递推公式：
+inOrder(r) = inOrder(r->left) -> print r -> inOrder(r -> right);
+后序遍历的递推公式：
+postOrder(r) = postOrder(r -> left) -> postOrder(r ->right) -> print r;
+
+
+void preOder(Node root){
+	if(root == null) return;
+	print root;
+	preOder(root->left);
+	preOder(root->right);
+}
+
+void intOder(Node root){
+	if(root == null) return;
+	intOder(root->left);
+	print root;	
+	intOder(root->right);
+}
+
+void postOder(Node root){
+	if(root == null) return;
+	postOder(root->left);
+	postOder(root->right);
+	print root;	
+}
+
+时间复杂度：每个节点最多会被访问俩次，所以遍历操作的时间复杂度。跟节点的个数n成正比，也就是说二叉树遍历的时间复杂度是O(n).
+解释：第一次遍历到的时候算了一次，递归返回的时候再一次。不过，这饿说法都很笼统，你只需要知道每个节点都被访问了，并且被访问的次数是常数次数就可以了。
+
+掌握概念：根节点、叶子节点、父节点、子节点、兄弟节点，还有节点的高度、深度、层数，以及数的高度。
+二叉树既可以用链式储存，也可以用数组储存。数组储存的方式适合完全二叉树，其他类型的二叉树用数组储存会比较浪费储存空间，除此之外，
+二叉树里最重要的操作就是前、中、后序遍历操作，遍历的时间复杂度是O(n),需要理解比能用递归代码实现。
