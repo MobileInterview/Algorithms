@@ -1,0 +1,136 @@
+二叉查找树最大的特点就是支持动态数据集合的快速插入、删除、查找操作。
+二叉查找树要求，在树中的任意一个节点，其左子树的每个节点的值，都要小于这个节点的值，而右子树节点的值都大于这个节点的值。
+1查找操作：
+如果要找的数据比根节点的值小，那就在左子树中递归查找；如果要查找的数据比根节点的值大，那就在右子树中递归查找。
+
+public class BinarySearchTree{
+	private Node tree;
+
+	public Node find(int data){
+		Node p = tree;
+		while(p != null){
+			if(data < p.data){
+				p = p.left;
+			}else if(data > p.data){
+				p = p.right;
+			}else{
+				return p;
+			}
+		}
+		return null;
+	}
+
+	public void insert(int data){
+		if(tree == null){
+		   tree = new Node(data);
+		   return;
+		}
+
+		Node p = tree;
+		while(p != null){
+			  if(data > p.data){
+			  	if(p.right == null){
+			  		p.right = new Node(data);
+			  		return;
+			  	}
+			  	p = p.right;
+			  }else{
+			  	if(p.left = null){
+			  	   p.left = new Node(data);
+			  	   return;
+			  	}
+			  	p = p.left;
+			  }
+		}
+	}
+
+	public void delete(int data){
+		Node p = tree; //p指向要删除的节点，初始化指向根节点
+		Node pp = null; //pp记录的p的父节点
+		while( p != null && p.data != data){
+		 	pp = p;
+		 	if(data > p.data){
+		 		p == p.right;
+		 	}else{
+		 		p = p.left;
+		 	}
+		}
+
+		if(p == null) return //没有找到
+
+		//要删除的节点有俩个子节点
+		if(p.left != null && p.right != null){
+			Node minp = p.right;
+			Node minpp = p; //minpp表示minp的父节点
+			while(minp.letf != null){
+				minpp = minp;
+				minp = minp.left;
+			}
+			p.data = minp.data; //将minp的数据替换到p中
+			p = minp; //下面就变成删除minp了
+			pp = minpp;
+		}
+
+		//删除节点是叶子节点或者仅有一个子节点
+		Node child;
+		if(p.left != null){
+			child = p.left;
+		}else if(p.right != null){
+			child = p.right;
+		}else{
+			child = null;
+		}
+
+		if(pp == null){
+			tree = child; //删除根节点
+		}else(pp.left == p){
+			pp.left = child;
+		}else{
+			pp.right = child;
+		}
+	}
+
+	public static class Node{
+		private int data;
+		private Node left;
+		private Node right;
+		public Node(int data){
+			this.data = data;
+		}
+	}
+
+}
+
+
+中序遍历二叉查找树，可以输出有序的数据序列，时间复杂度是O(n),非常高效，因此二叉查找树也叫二叉排序树。
+
+散列表的插入、删除、查找操作的时间复杂度可以做到常量级的O(1),非常高效，而二叉查找树在比较平衡的情况下，插入、删除、查找操作时间复杂度才是
+O(logn)，相对散列表，好像并没有什么优势，那我们为什么还要用二叉查找树？
+
+第一，散列表的数据是无序储存的，如果要输出有序的数据，需要先进行排序。而对于二叉查找树来说，我们只需要中序遍历，就可以在O(n)的时间复杂度内，输出有序的数据序列。
+
+第二，散列表扩容耗时很多，而且当遇到散列冲突时，性能不稳定，尽管二叉查找树的性能不稳定，但是在工作中，我们最常用的平衡二叉树的性能
+非常稳定，时间复杂度稳定在O(logn).
+
+第三，笼统地来说，尽管散列表的查找等操作时间复杂度是常量级别，但因为哈希冲突的存在，这个常量不一定比logn小，所以实际的查找速度可能不一定
+比O(logn)快。加上哈希函数的耗时，也不一定比平衡二叉查找树效率高。
+
+第四，散列表的构造比二叉查找树要复杂，需要考虑的东西很多。比如散列函数的设计、冲突解决办法、扩容、缩容等。平衡二叉查找树只需要考虑平衡
+性这一个问题，而且这个问题的解决方案比较成熟固定。
+
+最后，为了避免过多的散列冲突，散列表装载因子不能太大，特别是基于开放寻址法解决冲突的散列表。不然会浪费一定的储存空间。
+
+综合这几点，平衡二叉查找树在某方面还是优于散列表的，所以俩者的存在并不冲突。我们在实际的开发过程中，需要结合具体的需求来选择使用哪一个。
+
+二叉查找树中，每个节点的值都大于左子树节点的值，笑语右子树节点的值，不过，这是针对没有重复数据的情况。对于
+存在重复数据的二叉查找树，有俩种构建方法，一种是让每个节点储存多个值相同的数据；另外一种是，每个节点中储存
+一个数据。针对这种情况，我们需要稍加改造原来的插入，删除，查找操作。
+
+在二叉查找数中，查找、插入、删除等很多操作的时间复杂度都跟树的告诉成正比。俩个极端情况的时间复杂度分别是O(n)和O(logn)，分别对饮二叉树
+退化成链表的情况和完全二叉树。
+
+为了避免时间复杂度的退化，针对二叉查找树，我们又设计了一种更加复杂的树，平衡二叉查找树，时间复杂度可以做到稳定的O(logn).
+
+如何编程，求出一颗给定二叉树的确切高度呢？
+1.递归法，根节点高度=max(左子树高度，右子树高度) + 1;
+2.二叉树层次遍历。
