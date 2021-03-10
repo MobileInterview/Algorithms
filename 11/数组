@@ -1,0 +1,166 @@
+
+数组：最基础的数据结构，大部分编程语言从0开始编号。
+1.一种线性表结构，它用一组连续的内存空间，来储存相同类型的数据。
+2.线性：数据排成像一条线，每个数据最多只有前后俩个方向。
+3.连续的内容空间和相同的数据类型：随机访问，插入数据需要搬移。
+数组如何实现根据下标随机访问数组元素的？
+因为数组储存数据使用连续的内存空间：a[i]_address = base_address + i +data_type_size.
+低效的“插入”和“删除”：
+如果一组无序的数组，删除k个位置的时间复杂度O（1）。
+如果一组有序的数组，删除K个位置的优化方式：先删除，并记录。等内存不够再整体移动一次。
+在java里面谨防数组下标越界，C语言数组越界需要程序员自己去发现。
+ArraryList最大的优势可以将很多数组操作的细节封装起来，比如插入，删除数据时需要搬移数据等。还有支持动态扩容（1.5倍，耗时）。
+数组在定义的时候需要预先指定大小，因为它需要分配连续的内存空间：
+如果我们申请了大小为10的数组，当第11个数据需要储存到数组中时，我们需要重新分配一块更大的空间，将原来的数据复制过去，然后再将新的数据插入。
+在创建ArraryList的时候事先指定大小是最好的。
+1.java ArraryList无法储存基本类型，比如int，longf，需要封装成Integer、Long类，而Autobxing、Unboxing则有一定的性能消耗，所以如果特别关注性能，或者希望使用基本类型，就可以选择数组。
+2.如果数据大小事先已知，并且对数据的操作非常简单，用不到ArrayList提供的大部分方法，也可以使用数组。
+3.个人喜好，当要表示多维数组时，用数组往往会更加直观。比如Oject[][] arrary；而用容器的话则需要这样定义：ArraryList<ArraryList> arrary.
+总结：对于业务开发，直接使用容器就足够了，省时省力。毕竟损耗一丢丢性能，完全不会影响到系统整体性能。但如果你是做一些非常底层的开发，如果开发网络框架，性能的优化就需要做到极致，这个时候
+数组就会优于容易，成为首选。
+
+为什么从0开始访问
+下标：偏移。
+从0开始：a[i]_address = base_address + i +data_type_size.
+从1开始：a[i]_address = base_address + （i-1） +data_type_size.
+CPU多了一次减法指令，其实更多的是历史原因。也有不是0计数的比如Matlab，还有支持负数下标的比如Python。
+
+JVM标记清除算法：
+
+大多数主流虚拟机采用可达性分析算法来判断对象是否存活，在标记阶段，会遍历所有GC ROOTS，将所有GC ROOTS可达的对象标记为存活。只有当标记工作完成后，清理工作才会开始。
+不足：1.效率问题。标记和清理效率都不高，但是当知道只有少量垃圾产生时会很高效。2.空间问题，会产生连续的内存空间碎片。
+
+二维数组内存寻址：
+对于m*n的数组，a[I][j](i<m,j<n)的地址为：address = base_address + (i*n + j)*type_size.
+
+
+public class GeneralArray {
+    private int [] arr;
+    /*数组大小*/
+    private int size;
+    /*数组中有多少项*/
+    private int nElem;
+
+    public GeneralArray(int max){
+        this.arr = new int [max];
+        this.size = max;
+        this.nElem = 0;
+    }
+
+    public boolean insert(int value){
+        if(nElem == size){
+            System.out.println("数组已满");
+            return false;
+        }
+        arr[nElem] = value;
+        nElem++;
+        return true;
+    }
+
+    public boolean find(int searchNum){
+        for (int j = 0; j < nElem; j++){
+            if(arr[j] == searchNum){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean delete(int value){
+        for (int j = 0; j < nElem; j++){
+            if(arr[j] == value){
+                for (int k = j; k < nElem - 1; k++){
+                    arr[k] = arr[k+1];
+                }
+                arr[nElem - 1] = 0;
+                nElem--;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void display(){
+        for(int i = 0; i < nElem; i++) {
+            System.out.print(arr[i] + " ");
+        }
+    }
+
+}
+
+
+----------------------------------------------------------------------------
+
+public class OrderedArray {
+    private long[] arr;
+    /*数组的大小*/
+    private int size;
+    /*数组中有多少项*/
+    private int nElem;
+
+    public OrderedArray(int max) {
+        this.arr = new long[max];
+        this.size = max;
+        this.nElem = 0;
+    }
+
+    public boolean insert(long value) {
+        if (nElem == size) {
+            System.out.printf("数组已满");
+            return false;
+        }
+        int j;
+        for (j = 0; j < nElem; j++){
+            if (arr[j] > value){
+                break;
+            }
+        }
+        for (int k = nElem; k > j; k--){
+            arr[k] = arr[k-1];
+        }
+        arr[j] = value;
+        nElem++;
+        return false;
+
+    }
+
+    public int find(long value) {
+        int low = 0;
+        int upper = nElem - 1;
+        while (low <= upper) {
+            int mid = (low + upper) / 2;
+            if (arr[mid] < value) {
+                low = mid + 1;
+            } else if (arr[mid] > value) {
+                upper = mid - 1;
+            } else {
+                return mid;
+            }
+        }
+        return -1;
+    }
+
+    public boolean delete(long value){
+        int j = find(value);
+        if(j == -1){
+            System.out.printf("没有该元素");
+            return false;
+        }
+        for (int k = j; k < nElem -1; k++){
+            arr[k] = arr[k+1];
+
+        }
+        arr[nElem-1] = 0;
+        nElem--;
+        return true;
+    }
+
+    public void display(){
+        for (int i = 0; i < nElem; i++){
+            System.out.printf(arr[i] + " ");
+        }
+    }
+}
+
+
+

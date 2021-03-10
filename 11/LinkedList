@@ -1,0 +1,84 @@
+public class LinkedList {
+    private Link first;
+    private int mCount;//链表中的节点数量
+
+    public LinkedList() {
+        first = null;
+        mCount = 0;
+    }
+
+    public void insert(int value) {
+        mCount++;
+        Link newLink = new Link();
+        newLink.value = value;
+        if (first == null) {
+            first = newLink;
+            return;
+        }
+        Link previous = null;
+        Link current = first;
+        while (current != null && value > current.value) {
+            previous = current;
+            current = current.next;
+        }
+        if(previous == null){
+            first = newLink;
+        }else {
+            previous.next = newLink;
+            newLink.next = current;
+        }
+       
+    }
+
+    public void displayList(){
+        if(isEmpty()){
+            System.out.print("LinkedList is null");
+            return;
+        }
+        Link current = first;
+        while(current != null){
+            System.out.print(current.value + "");
+            current = current.next;
+        }
+    }
+
+    public Link find(int value){
+        Link current = first;
+        while (value != current.value){
+            if(current.next == null){
+                return null;
+            }
+            current = current.next;
+        }
+        return current;
+    }
+
+    public Link delete(int value){
+        Link current = first;
+        Link previous = first;
+        while(value != current.value){
+            if(current.next == null){
+                return null;
+            }
+            previous = current;
+            current = current.next;
+        }
+        if(current == first){
+            first = first.next;
+        }else{
+            previous.next = current.next;
+        }
+        mCount--;
+        return current;
+    }
+
+
+    public boolean isEmpty(){
+        return (first == null);
+    }
+
+    class Link {
+        public int value;
+        public Link next;
+    }
+}

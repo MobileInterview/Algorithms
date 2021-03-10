@@ -1,0 +1,116 @@
+public class DoublyLinkedList {
+    private Node first;//头节点
+    private Node last;//尾节点
+
+    public DoublyLinkedList() {
+        first = null;
+        last = null;
+    }
+
+    public boolean isEmpty() {
+        return (first == null);
+    }
+
+    public void insert(int value) {
+        Node newNode = new Node();
+        newNode.value = value;
+        if (first == null) {
+            first = newNode;
+        } else if (last == null) {
+            if (value > first.value) {
+                last = newNode;
+                last.previous = first;
+                first.next = last;
+            } else {
+                last = first;
+                first = newNode;
+                last.previous = first;
+                first.next = last;
+            }
+        } else {
+            Node previous = null;
+            Node current = first;
+            while (current != null && value > current.value) {
+                previous = current;
+                current = current.next;
+            }
+            if (previous == null) {
+                first.previous = newNode;
+                first = newNode;
+                newNode.next = first;
+            } else if (current == null) {
+                newNode.previous = last;
+                last.next = newNode;
+                last = newNode;
+            } else {
+                previous.next = newNode;
+                newNode.previous = previous;
+                current.previous = newNode;
+                newNode.next = current;
+            }
+        }
+    }
+
+    public Node find(int value) {
+        Node current = first;
+        while (value != current.value) {
+            if (current.next == null) {
+                return null;
+            }
+            current = current.next;
+        }
+        return current;
+    }
+
+    public Node delete(int value) {
+        Node current = first;
+        while (value != current.value) {
+            current = current.next;
+            if (current == null) {
+                System.out.print("no node");
+                return null;
+            }
+        }
+        if (current == first) {
+            if (isEmpty()) {
+                System.out.print("LinkedList is null");
+                return null;
+            }
+            Node temp = first;
+            if (first.next == null) {
+                last = null;
+            } else {
+                first.next.previous = null;
+            }
+            first = first.next;
+            return temp;
+        } else if (current == last) {
+            if (last == null) {
+                System.out.print("LinkedList is null");
+                return null;
+            }
+            Node temp = last;
+            last = last.previous;
+            last.next = null;
+        } else {
+            current.previous.next = current.next;
+            current.next.previous = current.previous;
+        }
+        return current;
+    }
+
+    public void display() {
+        Node current = first;
+        while (current != null) {
+            System.out.print("" + current.value);
+            current = current.next;
+        }
+    }
+
+
+    class Node {
+        public int value;
+        public Node next;
+        public Node previous;
+    }
+}
