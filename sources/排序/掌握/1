@@ -1,0 +1,43 @@
+递推公式:
+quick_sort(p..r) = quick_sort(p..q-1) + quick_sort(q+1,r);
+
+终止条件
+if(p >= r) return;
+
+p..i-1 都是小于 i..r 都是大于
+j左边都是已处理，j右边都是未处理
+
+public class QuickSort{
+	
+	public void quickSort(int[] a, int n){
+		quickSortInternally(a,0,n-1);
+	}
+
+	private void quickSortInternally(int[] a, int p ,int r){
+		if(p >= r) return;
+
+		int q = partition(a,p,r);
+		quickSortInternally(a,p,q-1);
+		quickSortInternally(a,q+1,r);
+
+	}
+
+	private int partition(int[] a,int p,int r){
+		//取最后一个点
+		int pivot = a[r];
+		int i = p;
+		for(int j = p; j < r; j++){
+			if(a[j] < pivot){
+				if(i == j){
+					i++;
+				}else{
+				 	swap(a[i],a[j]);
+				 	i++;
+				}
+			}
+			swa(a[i],a[r]);
+			return i;
+		}
+
+	}
+}
