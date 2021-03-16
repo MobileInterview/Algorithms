@@ -1,0 +1,40 @@
+    public class QueueBaseOnLinkedList{
+        private Node head;
+        private Node tail;
+
+        public void enqueue(int item){
+            if(tail == null){
+                Node node = new Node(item,null);
+                head = node;
+                tail = node;
+            }else{
+                tail.next = new Node(item,null);
+                tail = tail.next;
+            }
+        }
+
+        public int dequeue(){
+            if(head == null){
+                return -1;
+            }
+            int value = head.data;
+            head = head.next;
+            if(head == null){
+                tail = null;
+            }
+            return value;
+        }
+
+        private class Node{
+            public int data;
+            private Node next;
+
+            public Node(int data,Node next){
+                this.data = data;
+                this.next = next;
+            }
+            public int getData(){
+                return data;
+            }
+
+        }
