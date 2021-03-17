@@ -62,7 +62,7 @@ public class OrderArrary{
 			a[j] = a[j-1];
 		}
 		a[i] = value;
-		count--;
+		count++;
 		return true;
 
 	}

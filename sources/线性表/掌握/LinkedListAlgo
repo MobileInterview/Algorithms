@@ -10,7 +10,7 @@ public class LinkedListAlgo{
 
 	// 单链表反转	
 	public static Node reverse(Node list){
-		Node curr = list, pre = nll;
+		Node curr = list, pre = null;
 		while(curr != null){
 			Node next = curr.next;
 			curr.next = pre;
@@ -41,7 +41,7 @@ public class LinkedListAlgo{
 	public static Node findMiddleNode(Node list){
 		if(list == null) return;
 
-		Node fast = listif
+		Node fast = list;
 		Node slow = list;
 		while(fast != null && false.next != null){
 			fast = fast.next.next;

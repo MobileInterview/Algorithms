@@ -1,0 +1,17 @@
+    public boolean compareRepeat(int[] a1, int[] a2){
+        int length = a1.length + a2.length;
+        int x = 0;
+        int y = 0;
+        for(int i = 0; i < length;i++){
+            if(x == a1.length || y == a2.length)return false;
+
+            if(a1[x] > a2[y]){
+                y++;
+            }else if(a1[x] < a2[y]){
+                x++;
+            }else{
+                return true;
+            }
+        }
+        return false;
+    }

@@ -1,0 +1,29 @@
+    public class StackBaseOnlinkedList{
+        Node top;
+        
+        public void push(Node item){
+            if(top == null){
+                top = item;
+            }else{
+                item.next = top;
+                top = item;
+            }
+        }
+
+        public Node pop(){
+            if(top == null) return null; //没数据
+            Node value = top;
+            top = top.next;
+            return value;
+        }
+
+        private class Node {
+            public Node next;
+        }
+
+    }
+
+栈：受限制，可控。后进先出。
+数组实现：顺序栈。
+链表实现：链式栈。
+空间复杂度：指除了原本的数据储存空间外，算法运行还需要额外的储存空间。
