@@ -1,3 +1,25 @@
+public class BubbleSort{
+//原地排序(空间复杂度O(1)),稳定(排序前后相同的值顺序不变) 最好时间复杂度O(n),最坏(n^2),平均(O(n^2))
+	public void sort(int[] a,int n){
+	 if(n <= 1) retrun;
+
+	 for(int i = 0; i < n; i++){
+	 	boolean flag = false;
+	 	for(int j = 0; j < n - 1 - i; j++){
+	 		if(a[j] > a[j+1]){
+	 			int temp = a[j];
+	 			a[j] = a[j+1];
+	 			a[j+1] = temp;
+	 			flag = true;
+	 		}
+	 	}
+	 	if(!flag) break;
+
+	 }
+	}
+
+}
+
 递推公式:
 quick_sort(p..r) = quick_sort(p..q-1) + quick_sort(q+1,r);
 
