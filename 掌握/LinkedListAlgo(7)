@@ -4,7 +4,8 @@
  * 3) 求链表的中间结点
  * 4) 两个有序的链表合并
  * 5) 删除链表倒数第n个结点
- * 		
+ * 6) 链表相加:https://leetcode.com/problems/add-two-numbers/
+ * 7) 删除链表中重复的结点 in:{1,2,3,3,4,4,5} out:{1,2,5}
  */
 public class LinkedListAlgo{
 
@@ -101,16 +102,63 @@ public class LinkedListAlgo{
 		}
 		retrun head;
 }
+	//链表相加
+     public Node addLinkedList(Node l1, Node l2) {
+            Node addNode = new Node(0);
+            Node p = addNode;
+            int sum = 0;
 
+            while (l1 != null || l2 != null || sum != 0) {
+                if (l1 != null) {
+                    sum += l1.data;
+                    l1 = l1.next;
+                }
+                if (l2 != null) {
+                    sum += l2.data;
+                    l2 = l2.next;
+                }
+                p.next = new Node(sum % 10);
+                sum = sum / 10;
+                p = p.next;
+            }
+            return reverse(addNode.next);
+        }
 
+    1. 首先添加一个头节点，以方便碰到第一个，第二个节点就相同的情况
+2.设置 pre ，last 指针， pre指针指向当前确定不重复的那个节点，而last指针相当于工作指针，一直往后面搜索。
+public Node deleteRepeat(Node head){
+	 if(head == null || head.next == null) return head;
+	 
+	 Node soldier = new Node();
+	 soldier.next = head;
+	 Node prev = soldier;
+	 Node last = soldier.next;
+
+	 while(last != null){
+	 	if(last.next != null && last.data == last.next.data){
+	 			while(last.next != null && last.data == last.next.data){
+	 				last = last.next;
+
+	 			}
+	 			prev.next = last.next;
+	 			last = last.next;
+	 	}else{
+	 		pre = pre.next;
+	 		last = last.next;
+
+	 	}
+	 }
+	 return soldier.next;
+	
+} 
 
 	public static Node createNode(int value) {
     	return new Node(value, null);
   	}
 
     	public static class Node {
-    		private int data;
-    		private Node next;
+    		public int data;
+    		public Node next;
 
    		public Node(int data, Node next) {
       		this.data = data;
