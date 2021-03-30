@@ -127,30 +127,26 @@ public class LinkedListAlgo{
     1. 首先添加一个头节点，以方便碰到第一个，第二个节点就相同的情况
 2.设置 pre ，last 指针， pre指针指向当前确定不重复的那个节点，而last指针相当于工作指针，一直往后面搜索。
 public Node deleteRepeat(Node head){
-	 if(head == null || head.next == null) return head;
-	 
-	 Node soldier = new Node();
-	 soldier.next = head;
-	 Node prev = soldier;
-	 Node last = soldier.next;
+	if(head == null || head.next == null) return head;
 
-	 while(last != null){
-	 	if(last.next != null && last.data == last.next.data){
-	 			while(last.next != null && last.data == last.next.data){
-	 				last = last.next;
-
-	 			}
-	 			prev.next = last.next;
-	 			last = last.next;
-	 	}else{
-	 		pre = pre.next;
-	 		last = last.next;
-
-	 	}
-	 }
-	 return soldier.next;
-	
-} 
+	Node soldier = new Node(0);
+	soldier.next = head;
+	Node prev = soldier;
+	Node curr = soldier.next;
+	while(curr != null){
+		if(curr.next != null && curr.data == curr.next.data){
+			while(curr.next != null && curr.data == curr.next.data){
+				curr = curr.next;
+			}
+			prev.next = curr.next;
+			curr = curr.next;
+		}else{
+			prev = prev.next;
+			curr = curr.next;
+		}
+	}
+	return soldier.next;
+}
 
 	public static Node createNode(int value) {
     	return new Node(value, null);
